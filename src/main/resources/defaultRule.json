@@ -1,0 +1,12 @@
+{
+  "table_pre":"",
+  "columnType":{
+    "char":"String",
+    "varchar":"String",
+    "text":"String",
+    "blob":"String",
+    "bigint":"long",
+    "smallint":"int",
+    "tinyint":"int"
+  }
+}
