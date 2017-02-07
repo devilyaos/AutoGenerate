@@ -1,5 +1,9 @@
 {
-  "table_pre":"",
+  "author":"yaos",
+  "dateFormat":"yyyy-MM-dd",
+  "tablePre":"t_",
+  "tableName":["t_user"],
+  "baseTemplatePath":"E:\\workspace\\Java\\AutoGenerate\\src\\main\\resources\\template",
   "columnType":{
     "char":"String",
     "varchar":"String",
@@ -8,5 +12,15 @@
     "bigint":"long",
     "smallint":"int",
     "tinyint":"int"
-  }
+  },
+  "templates":[
+    {
+      "nameRule":"{name}.java",
+      "templatePath":"model.agt",
+      "filePath":"E:\\workspace\\Java\\AutoGenerate\\src\\main\\java\\com\\yaos\\autogenerate",
+      "package":"com.yaos.ucenter.module.model.user",
+      "comment":"用户账号表"
+    }
+  ]
+
 }
