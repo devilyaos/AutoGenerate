@@ -11,3 +11,4 @@
 hs_err_pid*
 .idea/
 target/
+!/jar/auto-generate-0.1.jar

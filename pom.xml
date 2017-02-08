@@ -7,6 +7,7 @@
     <groupId>com.yaos.autogenerate</groupId>
     <artifactId>AutoGenerate</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <jfinal.version>3.0</jfinal.version>
