@@ -115,7 +115,6 @@ public class AutoGen {
         String filePath ;
         List<Record> columnList ;
         Template beetlTemplate ;
-        Map<String,Object> templateParams ;
         //循环表
         for(int i = 0 ,len = tables.size() ; i < len ; i++){
             params = new HashMap<String,Object>();
@@ -127,9 +126,8 @@ public class AutoGen {
             //设置表信息
             params.put("tableName",table.getString("tableName")) ;
             params.put("tableComment",table.getString("tableComment")) ;
-            params.put("tableMethodName",upFirstLetter(transJdbcName2ParaName(
-                    table.getString("tableName").replace(table.getString("tablePre"),"")
-            )));
+            params.put("tableParamName",transJdbcName2ParaName(table.getString("tableName").replace(table.getString("tablePre"),""))) ;
+            params.put("tableMethodName",upFirstLetter(params.get("tableParamName").toString()));
             //设置列信息
             columnList = Db.find(String.format("show full columns from %s",table.getString("tableName")));
             for(Record record : columnList){
