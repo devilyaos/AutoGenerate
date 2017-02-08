@@ -1,25 +1,30 @@
 {
   "author":"yaos",
   "dateFormat":"yyyy-MM-dd",
-  "tablePre":"t_",
-  "tableName":["t_user"],
   "baseTemplatePath":"E:\\workspace\\Java\\AutoGenerate\\src\\main\\resources\\template",
+  "dataSource":{
+    "url":"jdbc:mysql://5557ee729f2c0.sh.cdb.myqcloud.com:3954/usercenter?characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull",
+    "user":"cdb_outerroot",
+    "pwd":"jiangzhong310"
+  },
+  "tables":[
+    {"tableName":"t_user","tablePre":"t_","tableComment":"用户信息表"}
+  ],
   "columnType":{
     "char":"String",
     "varchar":"String",
     "text":"String",
     "blob":"String",
-    "bigint":"long",
-    "smallint":"int",
-    "tinyint":"int"
+    "bigint":"Long",
+    "smallint":"Integer",
+    "tinyint":"Integer"
   },
   "templates":[
     {
-      "nameRule":"{name}.java",
-      "templatePath":"model.agt",
-      "filePath":"E:\\workspace\\Java\\AutoGenerate\\src\\main\\java\\com\\yaos\\autogenerate",
-      "package":"com.yaos.ucenter.module.model.user",
-      "comment":"用户账号表"
+      "templateName":"model.agt",
+      "filePath":"E:\\workspace\\Java\\hccj-ucenter\\src\\main\\java\\com\\yaos\\ucenter\\module\\model\\fromplate\\{name}.java",
+      "package":"com.yaos.ucenter.module.model.fromplate",
+      "comment":"用户账号信息"
     }
   ]
 

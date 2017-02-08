@@ -12,6 +12,11 @@
         <jfinal.version>3.0</jfinal.version>
         <mysqlconnect.version>6.0.5</mysqlconnect.version>
         <fastjson.version>1.2.24</fastjson.version>
+        <joda-time.version>2.9.3</joda-time.version>
+        <commons-io.version>2.5</commons-io.version>
+        <druid.version>1.0.23</druid.version>
+        <beetl.version>2.7.11</beetl.version>
+        <mysql-connector-java.version>6.0.5</mysql-connector-java.version>
     </properties>
 
     <dependencies>
@@ -29,6 +34,31 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl</artifactId>
+            <version>${beetl.version}</version>
         </dependency>
     </dependencies>
 </project>
