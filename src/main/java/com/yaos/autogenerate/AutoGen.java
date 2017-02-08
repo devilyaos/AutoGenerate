@@ -115,6 +115,7 @@ public class AutoGen {
         String filePath ;
         List<Record> columnList ;
         Template beetlTemplate ;
+        Map<String,Object> templateParams ;
         //循环表
         for(int i = 0 ,len = tables.size() ; i < len ; i++){
             params = new HashMap<String,Object>();
@@ -144,8 +145,9 @@ public class AutoGen {
             //循环模板
             for(int j = 0 , size = templates.size() ; j < size ; j++){
                 template = templates.getJSONObject(j) ;
-                params.put("package",template.getString("package")) ;
-                params.put("comment",template.getString("comment")) ;
+//                params.put("package",template.getString("package")) ;
+//                params.put("comment",template.getString("comment")) ;
+                params.putAll(template);
                 beetlTemplate = gt.getTemplate(template.getString("templateName"));
                 beetlTemplate.binding(params);
                 text = beetlTemplate.render() ;
