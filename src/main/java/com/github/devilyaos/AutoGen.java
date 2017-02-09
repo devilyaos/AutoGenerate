@@ -1,4 +1,4 @@
-package com.yaos.autogenerate;
+package com.github.devilyaos;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallConfig;

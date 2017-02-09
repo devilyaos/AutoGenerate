@@ -1,6 +1,4 @@
-package com.yaos.autogenerate;
-
-import com.jfinal.plugin.activerecord.Record;
+package com.github.devilyaos;
 
 import java.util.Map;
 
