@@ -6,7 +6,6 @@ import com.alibaba.druid.wall.WallFilter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.kit.JMap;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
@@ -14,7 +13,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
-import com.jfinal.template.Engine;
 import org.apache.commons.io.FileUtils;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
@@ -35,7 +33,7 @@ import java.util.Map;
 public class AutoGen {
 
     private static AutoGen instance = new AutoGen();
-    private JSONObject config ;
+    private static JSONObject config ;
     private DruidPlugin dp ;
     private ActiveRecordPlugin arp ;
     private FileResourceLoader resourceLoader ;
@@ -103,7 +101,7 @@ public class AutoGen {
     /**
      * 创建文件的服务
      */
-    public void create() throws IOException {
+    public void create(GetParamsListener listener) throws IOException {
         JSONArray tables = config.getJSONArray("tables") ;
         JSONArray templates = config.getJSONArray("templates") ;
         Map<String,Object> params ;
@@ -115,6 +113,7 @@ public class AutoGen {
         String filePath ;
         List<Record> columnList ;
         Template beetlTemplate ;
+        Map<String,Object> outsideParams ;
         //循环表
         for(int i = 0 ,len = tables.size() ; i < len ; i++){
             params = new HashMap<String,Object>();
@@ -126,33 +125,27 @@ public class AutoGen {
             //设置表信息
             params.put("tableName",table.getString("tableName")) ;
             params.put("tableComment",table.getString("tableComment")) ;
-            params.put("tableParamName",transJdbcName2ParaName(table.getString("tableName").replace(table.getString("tablePre"),""))) ;
-            params.put("tableMethodName",upFirstLetter(params.get("tableParamName").toString()));
+            params.put("tablePre",table.getString("tablePre")) ;
+            params.putAll(listener.addParamsAboutTableInfo(table.getString("tableName"),table.getString("tablePre"),table.getString("tableComment")));
             //设置列信息
             columnList = Db.find(String.format("show full columns from %s",table.getString("tableName")));
             for(Record record : columnList){
-                record.set("ColumnName",record.getStr("Field"));
-                record.set("CodeType",transJdbcType2CodeType(record.getStr("Type"))) ;
-                record.set("CodeParamName",transJdbcName2ParaName(record.getStr("Field").replace("is_","")));
-                record.set("CodeMethodName",upFirstLetter(transJdbcName2ParaName(record.getStr("Field").replace("is_",""))));
-                columnLineStr.append(record.getStr("CodeType")).append(" ").append(record.getStr("CodeParamName")).append(",") ;
+               Map<String, Object> columnParams = listener.addParamsAboutColumn(
+                       record.getStr("Field"),record.getStr("Type"),record.getStr("Key"),
+                       record.getStr("Default"),record.getStr("Comment")
+               ) ;
+                record.setColumns(columnParams);
             }
-            params.put("columnList",columnList) ;
-            params.put("columnLine",columnLineStr.length() > 0 ?
-                    columnLineStr.substring(0,columnLineStr.lastIndexOf(",")) : "") ;
+            params.put("columnList",columnList);
+            params.putAll(listener.addParamsAboutOthers());
             //循环模板
             for(int j = 0 , size = templates.size() ; j < size ; j++){
                 template = templates.getJSONObject(j) ;
-//                params.put("package",template.getString("package")) ;
-//                params.put("comment",template.getString("comment")) ;
                 params.putAll(template);
                 beetlTemplate = gt.getTemplate(template.getString("templateName"));
                 beetlTemplate.binding(params);
                 text = beetlTemplate.render() ;
-//                text = Engine.use()
-//                        .setBaseTemplatePath(config.getString("baseTemplatePath"))
-//                        .getTemplate(template.getString("templateName")).renderToString(params);
-                filePath = template.getString("filePath").replace("{name}",params.get("tableMethodName").toString()) ;
+                filePath = template.getString("filePath").replace("{fileName}",template.getString("fileName")) ;
                 genFile = new File(filePath) ;
                 FileUtils.touch(genFile);
                 FileUtils.write(genFile,text,Charset.forName("utf-8"));
@@ -205,7 +198,7 @@ public class AutoGen {
      * @param jdbcType 数据库类型
      * @return 代码类型
      */
-    private String transJdbcType2CodeType(String jdbcType){
+    public static String transJdbcType2CodeType(String jdbcType){
         if(jdbcType == null || jdbcType.length() == 0){
             return "undefined" ;
         }
@@ -224,7 +217,7 @@ public class AutoGen {
      * @param jdbcName 数据库名称
      * @return 参数名称
      */
-    private String transJdbcName2ParaName(String jdbcName){
+    public static String transJdbcName2ParaName(String jdbcName){
         String[] arr = jdbcName.split("_") ;
         if(arr == null || arr.length == 0){
             return "undefined" ;
@@ -241,7 +234,7 @@ public class AutoGen {
      * @param word 需要转换的单词
      * @return 抓换后的单词
      */
-    private String upFirstLetter(String word){
+    public static String upFirstLetter(String word){
         return word.substring(0,1).toUpperCase() + word.substring(1) ;
     }
 }
