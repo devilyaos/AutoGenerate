@@ -222,9 +222,9 @@ public class AutoGen {
         if(arr == null || arr.length == 0){
             return "undefined" ;
         }
-        String paraName = arr[0] ;
+        String paraName = arr[0];
         for(int i = 1 , len = arr.length ; i < len ; i++){
-            paraName += upFirstLetter(paraName);
+            paraName += upFirstLetter(arr[i]);
         }
         return paraName ;
     }
