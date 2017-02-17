@@ -26,10 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @AUTHOR yaos
- * @DATE 2017-02-06
- */
 public class AutoGen {
 
     private static AutoGen instance = new AutoGen();
@@ -40,35 +36,22 @@ public class AutoGen {
     private Configuration cfg ;
     private GroupTemplate gt ;
 
-    /**
-     * 获取单例
-     * @return 单例对象
-     */
     public static AutoGen use(){
         return instance ;
     }
 
-    /**
-     * 初始化
-     * @return 链式调用
-     */
     public AutoGen init() throws IOException {
         init(PathKit.getRootClassPath() + "/defaultRule.json");
         return this ;
     }
 
-    /**
-     * 初始化
-     * @param configPath 配置路径
-     * @return 链式调用
-     */
     public AutoGen init(String configPath) throws IOException {
         if(configPath == null || configPath.length() == 0){
             configPath = PathKit.getRootClassPath() + "/defaultRule.json" ;
         }
         config = getConfig(configPath) ;
         if(config == null){
-            throw new NullPointerException("找不到配置");
+            throw new NullPointerException("No Config.");
         }
         JSONObject dataSourceConfig = config.getJSONObject("dataSource") ;
         dp = new DruidPlugin(
@@ -94,40 +77,35 @@ public class AutoGen {
         resourceLoader = new FileResourceLoader(config.getString("baseTemplatePath"),"utf-8");
         cfg = Configuration.defaultConfiguration();
         gt = new GroupTemplate(resourceLoader, cfg);
-        System.out.println("-- 初始化成功");
+        System.out.println("-- init success .");
         return this ;
     }
 
-    /**
-     * 创建文件的服务
-     */
     public void create(GetParamsListener listener) throws IOException {
         JSONArray tables = config.getJSONArray("tables") ;
         JSONArray templates = config.getJSONArray("templates") ;
         Map<String,Object> params ;
         JSONObject table ;
+        JSONObject tempObj ;
         StringBuffer columnLineStr = new StringBuffer("");
         JSONObject template ;
         String text ;
         File genFile ;
         String filePath ;
+        String fileName ;
         List<Record> columnList ;
         Template beetlTemplate ;
         Map<String,Object> outsideParams ;
-        //循环表
         for(int i = 0 ,len = tables.size() ; i < len ; i++){
             params = new HashMap<String,Object>();
             table = tables.getJSONObject(i) ;
-            System.out.println(String.format("-- 开始生成 %s 相关文件",table.getString("tableName")));
-            //设置全局变量
+            System.out.println(String.format("-- start generate %s files",table.getString("tableName")));
             params.put("author",config.getString("author")) ;
             params.put("now",DateTime.now().toString(config.getString("dateFormat"))) ;
-            //设置表信息
             params.put("tableName",table.getString("tableName")) ;
             params.put("tableComment",table.getString("tableComment")) ;
             params.put("tablePre",table.getString("tablePre")) ;
             params.putAll(listener.addParamsAboutTableInfo(table.getString("tableName"),table.getString("tablePre"),table.getString("tableComment")));
-            //设置列信息
             columnList = Db.find(String.format("show full columns from %s",table.getString("tableName")));
             for(Record record : columnList){
                Map<String, Object> columnParams = listener.addParamsAboutColumn(
@@ -138,9 +116,16 @@ public class AutoGen {
             }
             params.put("columnList",columnList);
             params.putAll(listener.addParamsAboutOthers());
-            //循环模板
             for(int j = 0 , size = templates.size() ; j < size ; j++){
-                template = templates.getJSONObject(j) ;
+                tempObj = templates.getJSONObject(j) ;
+                template = new JSONObject() ;
+                for(String key : tempObj.keySet()){
+                    if(tempObj.get(key) instanceof JSONArray){
+                        template.put(key,tempObj.getJSONArray(key).get(i)) ;
+                    }else{
+                        template.put(key,tempObj.get(key)) ;
+                    }
+                }
                 params.putAll(template);
                 beetlTemplate = gt.getTemplate(template.getString("templateName"));
                 beetlTemplate.binding(params);
@@ -151,18 +136,13 @@ public class AutoGen {
                 FileUtils.write(genFile,text,Charset.forName("utf-8"));
                 System.out.println(String.format("---- %s : %s Done!",table.getString("tableName"),template.getString("templateName")));
             }
-            System.out.println(String.format("-- %s 处理结束",table.getString("tableName")));
+            System.out.println(String.format("-- %s Stop Deal",table.getString("tableName")));
         }
         arp.stop();
         dp.stop();
-        System.out.println("-- 成功释放");
+        System.out.println("-- release successfully .");
     }
 
-    /**
-     * 获取配置
-     * @param path 配置路径
-     * @return 配置对象
-     */
     private JSONObject getConfig(String path){
         BufferedReader reader = null;
         StringBuffer laststr = new StringBuffer("");
@@ -193,11 +173,6 @@ public class AutoGen {
         }
     }
 
-    /**
-     * 将数据库类型转换成代码类型
-     * @param jdbcType 数据库类型
-     * @return 代码类型
-     */
     public static String transJdbcType2CodeType(String jdbcType){
         if(jdbcType == null || jdbcType.length() == 0){
             return "undefined" ;
@@ -212,11 +187,6 @@ public class AutoGen {
         }
     }
 
-    /**
-     * 数据库名称按照小驼峰转换成参数名称
-     * @param jdbcName 数据库名称
-     * @return 参数名称
-     */
     public static String transJdbcName2ParaName(String jdbcName){
         String[] arr = jdbcName.split("_") ;
         if(arr == null || arr.length == 0){
@@ -229,11 +199,6 @@ public class AutoGen {
         return paraName ;
     }
 
-    /**
-     * 将单词的首字母大写
-     * @param word 需要转换的单词
-     * @return 抓换后的单词
-     */
     public static String upFirstLetter(String word){
         return word.substring(0,1).toUpperCase() + word.substring(1) ;
     }
