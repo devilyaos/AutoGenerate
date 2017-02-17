@@ -50,8 +50,8 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
   "templates":[
     {
       "templateName":"模板名",
-      "filePath":"生成文件名称，文件名用{fileName}指定，如{fileName}.java",
-      "fileName":"文件名，需要与代码中的类名相符，故统一调参",
+      "filePath":["表n的生成文件路径，文件名用{fileName}指定，如{fileName}.java"],
+      "fileName":["表n的文件名，需要与代码中的类名相符，故统一调参"],
       "param1":"自定义参数一，参数名可自定义",
       "param2":"自定义参数二，参数名可自定义",
       "param_n":"自定义参数n，参数名可自定义"
@@ -66,6 +66,11 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
 * tableComment `表注释`
 * tablePre `表前缀`
 * columnList `字段列表，其中每个字段的基础值为show full columns from table中返回的值`
+
+#####templates中的参数说明
+* 自定义参数可以像filePath和fileName那样，按照待生成表做数组，默认按照tables中的顺序进行读取，所以请按照顺序填写。（按照
+表名做键值对配置看起来就更多了，感觉不划算，后面考虑可以尝试一下）
+
 #####模板文件
 目前使用的模板引擎是beetl，所以所有的模板语法就是beetl语法，模板后缀名可随意指定，暂时不支持传入自定义变量，当然下一个
 版本是会加入的。
@@ -74,4 +79,4 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
 #####JFinal地址：[http://www.jfinal.com/](http://www.jfinal.com/)
 
 ###开源协议
-目前采用GPL协议开源，请谨慎选择，欢迎学习交流。
+目前采用Apache协议开源，请谨慎选择，欢迎学习交流。
