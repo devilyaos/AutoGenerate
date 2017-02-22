@@ -37,8 +37,8 @@
         <joda-time.version>2.9.3</joda-time.version>
         <commons-io.version>2.5</commons-io.version>
         <druid.version>1.0.23</druid.version>
-        <beetl.version>2.7.11</beetl.version>
-        <mysql-connector-java.version>6.0.5</mysql-connector-java.version>
+        <beetl.version>2.7.12</beetl.version>
+        <!--<mysql-connector-java.version>6.0.5</mysql-connector-java.version>-->
     </properties>
 
     <dependencies>
@@ -72,11 +72,11 @@
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>${mysql-connector-java.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>
