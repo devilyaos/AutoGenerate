@@ -1,13 +1,13 @@
 #AutoGenerate
 一款简单的代码生成器，通过json进行生成配置,基于JFinal 3.0 ，jdk 1.7+，更低版本未测试，理论上未使用高版本的api。
 ###当前版本
-V0.2
+V0.3
 ###当前仅提供maven的引入方式，如需jar包，最好自行下载后编译。
 ```xml
 <dependency>
       <groupId>com.github.devilyaos</groupId>
       <artifactId>AutoGenerate</artifactId>
-      <version>0.2</version>
+      <version>0.3</version>
 </dependency>
 ```
 ###调用方法

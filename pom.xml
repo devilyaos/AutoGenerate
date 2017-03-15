@@ -22,12 +22,12 @@
         <connection>scm:git:https://github.com/devilyaos/AutoGenerate.git</connection>
         <developerConnection>scm:git:https://github.com/devilyaos/AutoGenerate.git</developerConnection>
         <url>https://github.com/devilyaos/AutoGenerate.git</url>
-        <tag>v0.2</tag>
+        <tag>v0.3</tag>
     </scm>
 
     <groupId>com.github.devilyaos</groupId>
     <artifactId>AutoGenerate</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <properties>
