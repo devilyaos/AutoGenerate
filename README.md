@@ -1,8 +1,8 @@
-#AutoGenerate
+# AutoGenerate
 一款简单的代码生成器，通过json进行生成配置,基于JFinal 3.0 ，jdk 1.7+，更低版本未测试，理论上未使用高版本的api。
-###当前版本
+### 当前版本
 V0.3
-###当前仅提供maven的引入方式，如需jar包，最好自行下载后编译。
+### 当前仅提供maven的引入方式，如需jar包，最好自行下载后编译。
 ```xml
 <dependency>
       <groupId>com.github.devilyaos</groupId>
@@ -10,7 +10,7 @@ V0.3
       <version>0.3</version>
 </dependency>
 ```
-###调用方法
+### 调用方法
 ```java
 AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
               @Override
@@ -31,8 +31,8 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
 ```
 > 未避免不必要的错误，不提供默认配置，请指定读取路径
 
-###功能描述
-#####配置文件
+### 功能描述
+##### 配置文件
 ```json
 {
   "author":"作者姓名",
@@ -67,7 +67,7 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
   ]
 }
 ```
-#####默认会有的模板参数
+##### 默认会有的模板参数
 * author `作者姓名，config中配置`
 * now `当前时间，config中配置格式`
 * tableName `表名`
@@ -75,16 +75,16 @@ AutoGen.use().init("配置文件绝对路径").create(new GetParamsListener() {
 * tablePre `表前缀`
 * columnList `字段列表，其中每个字段的基础值为show full columns from table中返回的值`
 
-#####templates中的参数说明
+##### templates中的参数说明
 * 自定义参数可以像filePath和fileName那样，按照待生成表做数组，默认按照tables中的顺序进行读取，所以请按照顺序填写。（按照
 表名做键值对配置看起来就更多了，感觉不划算，后面考虑可以尝试一下）
 
-#####模板文件
+##### 模板文件
 目前使用的模板引擎是beetl，所以所有的模板语法就是beetl语法，模板后缀名可随意指定，暂时不支持传入自定义变量，当然下一个
 版本是会加入的。
 
-#####Beetl地址：[http://ibeetl.com/](http://ibeetl.com/)
-#####JFinal地址：[http://www.jfinal.com/](http://www.jfinal.com/)
+##### Beetl地址：[http://ibeetl.com/](http://ibeetl.com/)
+##### JFinal地址：[http://www.jfinal.com/](http://www.jfinal.com/)
 
-###开源协议
+### 开源协议
 目前采用Apache协议开源，请谨慎选择，欢迎学习交流。
